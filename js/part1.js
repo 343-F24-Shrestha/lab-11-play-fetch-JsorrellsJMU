@@ -61,8 +61,31 @@ document.getElementById("post-json-btn").addEventListener("click", async () => {
 });
 
 document.getElementById("post-form-btn").addEventListener("click", async () => {
-    // This function should send a POST request to the echo endpoint with the input data as form data
-    // The two input fields should be included in the request body as **url-encoded data**
+    // This function sends a POST request with URL-encoded form data
+    try {
+        // Retrieve values from input fields
+        const name = nameInput.value;
+        const age = ageInput.value;
 
-    // TODO
+        // Create options for the POST request
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({ name, age }).toString(), // URL-encoded form data
+        };
+
+        // Make the POST request
+        const response = await fetch("https://echo.zuplo.io/api", options);
+
+        // Parse the response as JSON
+        const data = await response.json();
+
+        // Display formatted JSON content in the output element
+        output.textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+        // Display any errors in the output element
+        output.textContent = `Error: ${error.message}`;
+    }
 });
